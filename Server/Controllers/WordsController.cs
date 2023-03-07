@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WordsCombiner.Server.Data;
 using WordsCombiner.Shared.Model;
@@ -25,9 +20,7 @@ namespace WordsCombiner.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Word>>> GetWords()
         {
-            var response = await _context.Words.ToListAsync();
-
-            return response;
+            return await _context.Words.ToListAsync();
         }
 
         // GET: api/Words/5

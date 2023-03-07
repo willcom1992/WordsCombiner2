@@ -11,7 +11,7 @@ using WordsCombiner.Server.Data;
 namespace WordsCombiner.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230307110127_InitialCreate")]
+    [Migration("20230307123234_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

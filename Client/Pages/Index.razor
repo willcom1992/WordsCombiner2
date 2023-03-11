@@ -1,10 +1,47 @@
 ﻿@page "/"
+@using WordsCombiner.Shared
+@using WordsCombiner.Shared.Model
+@inject HttpClient Http
 
 <PageTitle>WordCominer</PageTitle>
 
 <h1>Word Cominer!</h1>
 <h3>複合連結型発想法を手軽におこなうためのアプリケーション</h3>
 
-Welcome to your new app.
+@if (words == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>単語</th>
+                <th>品詞</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var word in words)
+            {
+                var partOfSpeech = (PartOfSpeech)word.PartOfSpeech;
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+                <tr>
+                    <td>@word.Id</td>
+                    <td>@word.Value</td>
+                    <td>@partOfSpeech</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Word[]?  words;
+
+    protected override async Task OnInitializedAsync()
+    {
+        words = await Http.GetFromJsonAsync<Word[]>("api/Words");
+    }
+}

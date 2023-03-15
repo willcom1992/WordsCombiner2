@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using WordsCombiner.Server.Data;
 
@@ -13,9 +12,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(
     options => options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-        )
-    );
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

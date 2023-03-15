@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WordsCombiner.Server.Data;
+using WordsCombiner.Shared;
 using WordsCombiner.Shared.Model;
+using WordsCombiner.Shared.Utility;
+using System.Linq;
 
 namespace WordsCombiner.Server.Controllers
 {
@@ -24,17 +27,29 @@ namespace WordsCombiner.Server.Controllers
         }
 
         // GET: api/Words/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Word>> GetWord(int id)
+        [HttpGet("search")]
+        public async Task<ActionResult<Word>> SearchWords(
+             [FromQuery]  Language language,
+             [FromQuery]  int NumberOfWords,
+             [FromQuery] PartOfSpeech partOfSpeech)
         {
-            var word = await _context.Words.FindAsync(id);
+            var entity = language switch
+            {
+                Language.Japanese => await _context.Words.Where(x => x.PartOfSpeech == (int)partOfSpeech).ToArrayAsync(),
+                // TODO: #8 英単語を取得できるようにする
+                Language.English => throw new NotImplementedException(),
+                _ => throw new NotImplementedException()
+            };
 
-            if (word == null)
+            // 取得した entity の中から画面に表示する単語をランダムに選択する 
+            var numbers = RandomNumbers.GetUniqRandomNumbers(0, entity.Length-1, NumberOfWords);
+            var words = numbers.Select(number => entity[number]);
+            if (words == null)
             {
                 return NotFound();
             }
 
-            return word;
+            return Ok(words);
         }
 
         // PUT: api/Words/5

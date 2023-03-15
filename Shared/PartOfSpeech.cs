@@ -1,20 +1,28 @@
-﻿namespace WordsCombiner.Shared
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WordsCombiner.Shared
 {
+    /// <summary>
+    /// 品詞。
+    /// </summary>
     public enum PartOfSpeech
     {
         /// <summary>
         /// 名詞。
         /// </summary>
-        Noun = 0,
+        [Display(Name = "名詞", Order = 0)]
+        Noun,
 
         /// <summary>
         /// 動詞。
         /// </summary>
-        Verb = 1,
+        [Display(Name = "動詞", Order = 1)]
+        Verb,
 
         /// <summary>
         /// 形容詞。
         /// </summary>
-        Adjective = 2,
+        [Display(Name = "形容詞", Order = 2)]
+        Adjective,
     }
 }

@@ -31,6 +31,5 @@
 
 ## ワイヤーフレーム
 
-![image](https://user-images.githubusercontent.com/59964162/223427515-097688a5-d2c7-4f4f-b8c6-c1dcae88baec.png)
-    * https://www.figma.com/file/MRNgRH5ckEFp2Oq0O0pemz/%E7%84%A1%E9%A1%8C?node-id=0%3A1&t=WbLM648Rrlx7V5A0-1itfot
+* https://www.figma.com/file/MRNgRH5ckEFp2Oq0O0pemz/%E7%84%A1%E9%A1%8C?node-id=0%3A1&t=WbLM648Rrlx7V5A0-1itfot
 

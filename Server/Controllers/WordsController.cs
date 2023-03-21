@@ -28,7 +28,7 @@ namespace WordsCombiner.Server.Controllers
 
         // GET: api/Words/5
         [HttpGet("search")]
-        public async Task<ActionResult<Word>> SearchWords(
+        public async Task<ActionResult<Word>> SearchWordsAsync(
              [FromQuery]  Language language,
              [FromQuery]  int NumberOfWords,
              [FromQuery] PartOfSpeech partOfSpeech)

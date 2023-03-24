@@ -1,6 +1,6 @@
 ﻿namespace WordsCombiner.Shared.Utility
 {
-    public class RandomNumbers
+    public class RandomNumbers : IRandomNumbers
     {
         static void Swap(ref int m, ref int n)
         {
@@ -11,7 +11,7 @@
 
         // ダステンフェルドのアルゴリズム
 
-        public static IEnumerable<int> GetUniqRandomNumbers(int rangeBegin, int rangeEnd, int count)
+        public IEnumerable<int> GetUniqRandomNumbers(int rangeBegin, int rangeEnd, int count)
         {
             // 指定された範囲の整数を格納できる配列を用意する
             int[] work = new int[rangeEnd - rangeBegin + 1];

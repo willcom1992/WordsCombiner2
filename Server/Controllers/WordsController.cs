@@ -13,10 +13,12 @@ namespace WordsCombiner.Server.Controllers
     public class WordsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IRandomNumbers _randomNumbers;
 
-        public WordsController(AppDbContext context)
+        public WordsController(AppDbContext context, IRandomNumbers randomNumbers)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _randomNumbers = randomNumbers ?? throw new ArgumentNullException(nameof(randomNumbers));
         }
 
         // GET: api/Words
@@ -30,7 +32,7 @@ namespace WordsCombiner.Server.Controllers
         [HttpGet("search")]
         public async Task<ActionResult<Word>> SearchWords(
              [FromQuery]  Language language,
-             [FromQuery]  int NumberOfWords,
+             [FromQuery]  int numberOfWords,
              [FromQuery] PartOfSpeech partOfSpeech)
         {
             var entity = language switch
@@ -42,7 +44,7 @@ namespace WordsCombiner.Server.Controllers
             };
 
             // 取得した entity の中から画面に表示する単語をランダムに選択する 
-            var numbers = RandomNumbers.GetUniqRandomNumbers(0, entity.Length-1, NumberOfWords);
+            var numbers = _randomNumbers.GetUniqRandomNumbers(0, entity.Length-1, numberOfWords);
             var words = numbers.Select(number => entity[number]);
             if (words == null)
             {

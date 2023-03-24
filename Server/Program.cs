@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WordsCombiner.Server.Data;
+using WordsCombiner.Shared.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<IRandomNumbers, RandomNumbers>();
 
 builder.Services.AddSwaggerGen();
 

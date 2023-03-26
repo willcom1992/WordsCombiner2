@@ -1,14 +1,13 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WordsCombiner.Shared.Model;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Microsoft.EntityFrameworkCore;
-using WordsCombiner.Server.Data;
-using System.Threading.Tasks;
-using System;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Xunit;
-using System.Collections;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using WordsCombiner.Server.Data;
+using WordsCombiner.Shared;
+using WordsCombiner.Shared.Model;
+using Xunit;
 
 namespace WordsCombiner.ServerTest
 {
@@ -32,18 +31,41 @@ namespace WordsCombiner.ServerTest
         {
             get
             {
-                yield return MakeSearchWordsAsyncTestData();
+                var entity = new Word[]
+                {
+                    new Word(){Id = 1, Value ="飛行機", PartOfSpeech = 0},
+                    new Word(){Id = 2, Value ="風船", PartOfSpeech = 0},
+                    new Word(){Id = 3, Value ="走る", PartOfSpeech = 1},
+                    new Word(){Id = 4, Value ="飛ぶ", PartOfSpeech = 1},
+                };
+
+                yield return MakeSearchWordsAsyncTestData(
+                    entity,
+                    Language.Japanese,
+                    1,
+                    PartOfSpeech.Noun,
+                    new Word[] 
+                    {
+                        new Word(){Id = 1, Value ="飛行機", PartOfSpeech = 0},
+                    });
             }
         }
 
-        private static object[] MakeSearchWordsAsyncTestData()
+        private static object[] MakeSearchWordsAsyncTestData(
+            IEnumerable<Word> entity,
+            Language language,
+            int numberOfWords,
+            PartOfSpeech partOfSpeech,
+            IEnumerable<Word> expected)
         {
+            var expected = 
+
             return new object[] { };
         }
 
         [Theory]
         [MemberData(nameof(MakeSearchWordsAsyncTestData))]
-        public void SearchWordsAsync()
+        public void SearchWordsAsync(Language language, int numberOfWords, PartOfSpeech partOfSpeech)
         {
             var expected = new Word[]
             {

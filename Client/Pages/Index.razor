@@ -5,6 +5,29 @@
 
 <PageTitle>WordCominer</PageTitle>
 
+<div id="goilv">
+    <h2>生成元の単語の設定</h2>
+</div>
+<div class="options">
+    <div id="language">
+        <h3>言語</h3>
+    </div>
+    <div id="language_option">
+        <!-- 言語選択 -->
+	    <form>
+		    <label>
+			    <input type="radio" name="language" value="japanese" checked>
+			    日本語
+		    </label>
+		    <label>
+			    <input type="radio" name="language" value="english">
+			    English
+		    </label>
+	    </form>
+        <br />
+    </div>
+</div>
+
 @if (words == null)
 {
     <p><em>Loading...</em></p>

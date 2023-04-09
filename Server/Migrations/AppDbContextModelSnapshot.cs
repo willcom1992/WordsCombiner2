@@ -21,23 +21,17 @@ namespace WordsCombiner.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("WordsCombiner.Shared.Model.Word", b =>
+            modelBuilder.Entity("WordsCombiner.Shared.Model.JapaneseWord", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("PartOfSpeech")
                         .HasColumnType("int");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("Value");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Words");
+                    b.ToTable("JapaneseWords");
                 });
 #pragma warning restore 612, 618
         }

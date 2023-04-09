@@ -9,7 +9,13 @@ namespace WordsCombiner.Server.Data
         {
         }
 
-        public DbSet<Word> Words { get; set; }
+        public DbSet<JapaneseWord> JapaneseWords { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<JapaneseWord>()
+                .HasKey(x => x.Value);
+        }
 
     }
 }

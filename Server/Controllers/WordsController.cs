@@ -23,21 +23,21 @@ namespace WordsCombiner.Server.Controllers
 
         // GET: api/Words
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Word>>> GetWords()
+        public async Task<ActionResult<IEnumerable<JapaneseWord>>> GetWords()
         {
-            return await _context.Words.ToListAsync();
+            return await _context.JapaneseWords.ToListAsync();
         }
 
-        // GET: api/Words/5
+        // GET: api/Words/search
         [HttpGet("search")]
-        public async Task<ActionResult<Word>> SearchWords(
+        public async Task<ActionResult<JapaneseWord>> SearchWords(
              [FromQuery]  Language language,
              [FromQuery]  int numberOfWords,
              [FromQuery] PartOfSpeech partOfSpeech)
         {
             var entity = language switch
             {
-                Language.Japanese => await _context.Words.Where(x => x.PartOfSpeech == (int)partOfSpeech).ToArrayAsync(),
+                Language.Japanese => await _context.JapaneseWords.Where(x => x.PartOfSpeech == (int)partOfSpeech).ToArrayAsync(),
                 // TODO: #8 英単語を取得できるようにする
                 Language.English => throw new NotImplementedException(),
                 _ => throw new NotImplementedException()
@@ -52,69 +52,6 @@ namespace WordsCombiner.Server.Controllers
             }
 
             return Ok(words);
-        }
-
-        // PUT: api/Words/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutWord(int id, Word word)
-        {
-            if (id != word.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(word).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!WordExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Words
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Word>> PostWord(Word word)
-        {
-            _context.Words.Add(word);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetWord", new { id = word.Id }, word);
-        }
-
-        // DELETE: api/Words/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWord(int id)
-        {
-            var word = await _context.Words.FindAsync(id);
-            if (word == null)
-            {
-                return NotFound();
-            }
-
-            _context.Words.Remove(word);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool WordExists(int id)
-        {
-            return _context.Words.Any(e => e.Id == id);
         }
     }
 }

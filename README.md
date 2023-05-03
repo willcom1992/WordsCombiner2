@@ -1,4 +1,4 @@
-## 複合連結型発想法-要求・要件定義
+開発中
 
 ### 概要
 
@@ -28,8 +28,4 @@
 * 生成した連結語から、アイデアを生む補助をする機能もあるとうれしい
     * 例: ChatGPT の API を使えないか
 ![image](https://user-images.githubusercontent.com/59964162/223427135-a9a21d9d-9274-4104-9d79-d4891689ecf0.png)
-
-## ワイヤーフレーム
-
-* https://www.figma.com/file/MRNgRH5ckEFp2Oq0O0pemz/%E7%84%A1%E9%A1%8C?node-id=0%3A1&t=WbLM648Rrlx7V5A0-1itfot
 

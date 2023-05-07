@@ -5,61 +5,121 @@
 
 <PageTitle>WordCominer</PageTitle>
 
+@using System.Linq
+
 <div id="goilv">
     <h2>生成元の単語の設定</h2>
-</div>
-<div class="options">
-    <div id="language">
-        <h3>言語</h3>
+    <h3>言語</h3>
+    <div>
+        <label>
+            <input type="radio" name="language" value="Japanese" @onchange="@(e => ChangeLanguage(e.Value.ToString()))" checked /> 日本語
+        </label>
+        <label>
+            <input type="radio" name="language" value="English" @onchange="@(e => ChangeLanguage(e.Value.ToString()))" /> 英語
+        </label>
     </div>
-    <div id="language_option">
-        <!-- 言語選択 -->
-	    <form>
-		    <label>
-			    <input type="radio" name="language" value="japanese" checked>
-			    日本語
-		    </label>
-		    <label>
-			    <input type="radio" name="language" value="english">
-			    English
-		    </label>
-	    </form>
-        <br />
+    <h3>単語数</h3>
+    <div>
+        <label>
+            <input type="radio" name="numberOfWords" value="2" @onchange="@(e => ChangeNumberOfWords(int.Parse(e.Value.ToString())))" checked /> ２語
+        </label>
+        <label>
+            <input type="radio" name="numberOfWords" value="3" @onchange="@(e => ChangeNumberOfWords(int.Parse(e.Value.ToString())))" /> ３語
+        </label>
     </div>
-</div>
+    @* 単語の固定設定 *@
+    <h3>単語の固定</h3>
+    @foreach (var wordInput in wordInputs)
+    {
+        <div>
+            @* 固定を選択するためのラジオボタン *@
+            <label>
+                <input type="radio" name="@($"wordFixed{wordInput.Id}")" value="fixed" @onchange="@(e => wordInput.SetFixed(e.Value.ToString() == "fixed"))" /> 固定
+            </label>
+            @* 固定しないを選択するためのラジオボタン *@
+            <label>
+                <input type="radio" name="@($"wordFixed{wordInput.Id}")" value="notFixed" @onchange="@(e => wordInput.SetFixed(e.Value.ToString() != "fixed"))" checked /> 固定しない
+            </label>
+            @* 固定された単語を入力するためのテキストボックス *@
+            <input type="text" @bind="wordInput.Word" disabled="@(!wordInput.Fixed)" />
+        </div>
+    }
 
-@if (japaneseWords == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>単語</th>
-                <th>品詞</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var japaneseWord in japaneseWords)
-            {
-                var partOfSpeech = (PartOfSpeech)japaneseWord.PartOfSpeech;
-
-                <tr>
-                    <td>@japaneseWord.Value</td>
-                    <td>@partOfSpeech</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+    @* 品詞設定 *@
+    <h3>品詞</h3>
+    @foreach (var wordInput in wordInputs)
+    {
+        <div>
+            @* 名詞を選択するためのラジオボタン *@
+            <label>
+                <input type="radio" name="@($"wordType{wordInput.Id}")" value="noun" @onchange="@(e => wordInput.SetWordType(e.Value.ToString()))" disabled="@wordInput.Fixed" checked /> 名詞
+            </label>
+            @* 動詞を選択するためのラジオボタン *@
+            <label>
+                <input type="radio" name="@($"wordType{wordInput.Id}")" value="verb" @onchange="@(e => wordInput.SetWordType(e.Value.ToString()))" disabled="@wordInput.Fixed" /> 動詞
+            </label>
+            @* 形容詞を選択するためのラジオボタン *@
+            <label>
+                <input type="radio" name="@($"wordType{wordInput.Id}")" value="adjective" @onchange="@(e => wordInput.SetWordType(e.Value.ToString()))" disabled="@wordInput.Fixed" /> 形容詞
+            </label>
+        </div>
+    }
+    </div>
 
 @code {
-    private JapaneseWord[]? japaneseWords;
+    // 使用する言語
+    string language = "Japanese";
+    // 単語の数
+    int numberOfWords = 2;
+    // 単語入力オブジェクトのリスト
+    List<WordInput> wordInputs = Enumerable.Range(1, 2).Select(_ => new WordInput()).ToList();
 
-    protected override async Task OnInitializedAsync()
+    // 単語入力クラス
+    class WordInput
     {
-        japaneseWords = await Http.GetFromJsonAsync<JapaneseWord[]>("api/Words");
+        // 単語入力の一意なID
+        public int Id { get; } = new Random().Next();
+        // 単語が固定されているかどうか
+        public bool Fixed { get; private set; }
+        // 単語
+        public string Word { get; set; } = "";
+        // 品詞
+        public string WordType { get; private set; } = "noun";
+
+        // 単語の固定状態を設定するメソッド
+        public void SetFixed(bool fixedValue)
+        {
+            Fixed = fixedValue;
+            if (Fixed)
+            {
+                WordType = null;
+            }
+            else
+            {
+                WordType = "noun";
+            }
+        }
+
+        // 品詞を設定するメソッド
+        public void SetWordType(string wordType)
+        {
+            if (!Fixed)
+            {
+                WordType = wordType;
+            }
+        }
+    }
+
+    // 単語数を変更するメソッド
+    private void ChangeNumberOfWords(int newNumberOfWords)
+    {
+        numberOfWords = newNumberOfWords;
+        wordInputs = Enumerable.Range(1, numberOfWords).Select(_ => new WordInput()).ToList();
+    }
+
+    // 言語を変更するメソッド
+    private void ChangeLanguage(string newLanguage)
+    {
+        language = newLanguage;
     }
 }

@@ -1,5 +1,48 @@
 開発中
 
+## ローカル実行
+
+### 前提
+
+* Windows / macOS / Linux
+* .NET SDK（このプロジェクトは `net6.0`）
+    * 未導入の場合: https://dotnet.microsoft.com/ からインストール
+
+### 起動（推奨: Server から）
+
+この構成は「Blazor WebAssembly Hosted」なので、基本的に Server を起動します。
+
+リポジトリ直下で:
+
+```powershell
+dotnet restore
+dotnet run --project .\Server\WordsCombiner.Server.csproj
+```
+
+起動後、ブラウザで以下にアクセスします:
+
+* https://localhost:7028
+* http://localhost:5028
+
+終了はターミナルで `Ctrl + C`。
+
+### HTTPS 証明書エラーが出る場合
+
+ローカル開発用証明書を信頼します（初回のみ）。
+
+```powershell
+dotnet dev-certs https --trust
+```
+
+### DB（必要になったら）
+
+Server は SQL Server(LocalDB) を使う設定になっています（接続文字列は [Server/appsettings.json](Server/appsettings.json)）。
+
+* Visual Studio を入れている場合は LocalDB が使えることが多いです
+* SQL Server / SQL Express を使う場合は、接続文字列を自分の環境に合わせて変更してください
+
+※ 現状のマイグレーションはテーブル作成を含まないため、`dotnet ef database update` がそのままでは失敗する可能性があります（DB を実際に使う段階で整備が必要です）。
+
 ### 概要
 
 * 孫正義の複合連結型発想法を手軽におこなうための web Application
